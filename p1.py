@@ -3,17 +3,19 @@ import numpy as np
 import nnfs
 from nnfs.datasets import spiral_data
 import matplotlib
+from keras.datasets import fashion_mnist
 
 #this file is representing one layer of 3 neurons
 
-#np.random.seed(0)
-nnfs.init() #sets a default data type for numpy
-
+np.random.seed(0)
 
 #2 hidden layers
 class Layer_Dense:
     def __init__(self, n_inputs, n_neurons):
-        self.weights = 0.1*np.random.randn(n_inputs, n_neurons)
+        self.weights = np.random.randn(n_inputs, n_neurons) * np.sqrt(2/n_inputs) 
+            #we scale by (2/n_inputs) because this is the recommended way to initialize weights for ReLU activation function, which we are using in our hidden layers, and it helps us avoid vanishing/exploding gradients
+            #vanishing/exploding gradients is when the gradients() become too small or too large during backpropagation
+            #gradients are the derivatives of the loss function with respect to the weights and biases, and they are used to update the weights and biases during training
             #weights is a matrix of n_inputs rows, n_neurons columns
         self.biases = np.zeros((1,n_neurons))
             #rn biases are intialized to zeros
@@ -82,22 +84,50 @@ class Loss_CategoricalCrossentropy(Loss):
         negative_log_likelihoods = -np.log(correct_confidences)
         return negative_log_likelihoods
 
+def accuracy(predictions, y_true):
+    #fraction of samples where argmax prediction matches the true label
+    predicted_labels = np.argmax(predictions, axis=1)
+    return np.mean(predicted_labels == y_true)
 
+(X_train, y_train), (X_test, y_test) = fashion_mnist.load_data()
+#dataset: https://github.com/zalandoresearch/fashion-mnist
+#has 10 classes of clothing items, 60,000 training examples, 10,000 test examples
+CLASS_NAMES = ["T-shirt/top", "Trouser", "Pullover", "Dress", "Coat", 
+               "Sandal", "Shirt", "Sneaker", "Bag", "Ankle boot"]
 
-X, y = spiral_data(samples=100, classes=3) #100 samples per class and 3 seperate classes
-dense1 = Layer_Dense(2,3) #2 inputs bc the spiral data is (x,y) data so its 2 coordinates, we choose 3 outputs can choose anything
+#X_train.shape is (60000,28,28) => 60000 pic, each pic is a 28x28 pixel image, this is like a 3D array, we have 60000 2D arrays of 28x28
+#y_train.shape is (60000,) => 60000 labels, each label is a number from 0-9 representing the class of clothing
+#we need to flatten the 28x28 images into a 1D array of 784 pixels
+X_train = X_train.reshape(X_train.shape[0], -1).astype(np.float32)
+X_test = X_test.reshape(X_test.shape[0], -1).astype(np.float32)
+
+#we also need to normalize the pixel values to be between 0 and 1, instead of 0-255
+X_train /= 255.0
+X_test /= 255.0
+
+dense1 = Layer_Dense(784,128) #784 inputs bc the data is784 pixels and we choose 128 neurons in hidden1 layer
 activation1 = Activation_ReLU()
 
-dense2 = Layer_Dense(3, 3) #3 inputs bc the outputs of the last layer was 3, and 3 outputs we choose bc 3 classes
-activation2 = Activation_Softmax()
+dense2 = Layer_Dense(128, 64) #128 inputs bc the outputs of the last layer was 128 neurons, and we choose 64 neurons in hidden2 layer
+activation2 = Activation_ReLU()
 
-dense1.forward(X)
+dense3 = Layer_Dense(64, 10) #64 inputs bc the outputs of the last layer was 64 neurons, and we choose 10 neurons in output layer bc we have 10 classes
+activation3 = Activation_Softmax()
+
+#FORWARD PASS 
+#on just a batch of data, not the whole dataset
+BATCH_SIZE = 256
+X_batch = X_train[:BATCH_SIZE]
+y_batch = y_train[:BATCH_SIZE]
+
+dense1.forward(X_batch)
 activation1.forward(dense1.output)
 
 dense2.forward(activation1.output)
 activation2.forward(dense2.output)
 
-print(activation2.output[:5])
+dense3.forward(activation2.output)
+activation3.forward(dense3.output)
 
 #one hot encoding
 #vector that is n long, where n is number of classes
@@ -123,8 +153,8 @@ print(activation2.output[:5])
 
     
 loss_function = Loss_CategoricalCrossentropy()
-loss = loss_function.calculate(activation2.output, y) #activation2.output is softmax outputs, y is the target
-print("Loss: ", loss)
+loss = loss_function.calculate(activation3.output, y_batch) #activation3.output is softmax outputs, y_batch is the target
+accuracy = accuracy(activation3.output, y_batch)
 
 
 #loss tells us how wrong smth is
@@ -135,3 +165,13 @@ print("Loss: ", loss)
 
 #for each weight and bias, we can also change only one at a time and calculate the resulting loss
 
+
+#DISPLAYING OUTPUTS
+print(f"\n── Forward pass on {BATCH_SIZE} samples ──")
+print(f"Loss:     {loss:.4f}   (random init baseline ≈ {np.log(10):.4f})")
+print(f"Accuracy: {accuracy*100:.1f}%  (random init baseline ≈ 10%)")
+print(f"\nFirst 5 predictions:")
+for i in range(5):
+    pred  = np.argmax(activation3.output[i])
+    true  = y_batch[i]
+    print(f"  Sample {i}: predicted={CLASS_NAMES[pred]:<15} true={CLASS_NAMES[true]}")
