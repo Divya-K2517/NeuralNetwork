@@ -4,17 +4,17 @@ A completely connected neural network built using only NumPy and trained on the 
 
 Starting from random weights, the model reaches 85.6% training accuracy and 84.0% test accuracy.
 
-<u>Table of Contents</u>
-Dataset
-Network Architecture
-Forward Passes
-Loss Function
-Backpropagation
-Optimizer
-Training Loop
-Results
+<ins>Table of Contents</ins>
+Dataset <br>
+Network Architecture <br>
+Forward Passes <br>
+Loss Function <br>
+Backpropagation <br>
+Optimizer <br>
+Training Loop <br>
+Results <br>
 
-<u>DataSet</u>
+<ins>DataSet</ins>
 
 
 
