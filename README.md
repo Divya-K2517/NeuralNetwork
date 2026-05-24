@@ -57,7 +57,8 @@ Softmax activation prevents numerical overflow by subtracting the minimum value 
 
 <ins>Loss</ins> <br>
 The network trains using *Categorical Cross-Entropy* loss: loss = -(one_hot[i]*log(prediction[i])) for i in range (0, num_classes)<br>
-Lets break this down: <br>
+
+Lets break this down: 
 * each training example has its own loss
 * one_hot[i] refers to the one-hot encoding for a certain class, where the other classes are 0 and the correct class is 1. For example, the one-hot encoding for class 2 would be: [0,0,1,0,0,0,0,0,0,0]
 * prediction[i] is the vector of how likely an example is of a certain class.
