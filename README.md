@@ -55,6 +55,14 @@ The *ReLU* activation function is applied after each hidden layer: ReLU(x) = max
 The *Softmax* activation function is applied to the output layer: Softmax(x) = $\frac{$e^x$}{sum_of_$e^y$_for_each_output_of_that_layer}$
 Softmax activation prevents numerical overflow by subtracting the minimum value of a set of inputs(these inputs to the softmax function are the outputs of a whole layer) from all values in the set.
 
+<ins>Loss</ins> <br>
+The network trains using *Categorical Cross-Entropy* loss: loss = -(one_hot[i]*log(prediction[i])) for i in range (0, num_classes)<br>
+Lets break this down: <br>
+* each training example has its own loss
+* one_hot[i] refers to the one-hot encoding for a certain class, where the other classes are 0 and the correct class is 1. For example, the one-hot encoding for class 2 would be: [0,0,1,0,0,0,0,0,0,0]
+* prediction[i] is the vector of how likely an example is of a certain class.
+* thanks to the one-hot encoding multiplying all wrong classes by 0, what we are essentially doing is: -log(prediction_probability_for_correct_class)
+
 
 
 
@@ -62,3 +70,4 @@ References:
 [https://github.com/zalandoresearch/fashion-mnist](https://github.com/zalandoresearch/fashion-mnist) <br>
 [https://towardsdatascience.com/kaiming-he-initialization-in-neural-networks-math-proof-73b9a0d845c4/](https://towardsdatascience.com/kaiming-he-initialization-in-neural-networks-math-proof-73b9a0d845c4/) <br>
 [https://www.geeksforgeeks.org/deep-learning/the-role-of-softmax-in-neural-networks-detailed-explanation-and-applications/](https://www.geeksforgeeks.org/deep-learning/the-role-of-softmax-in-neural-networks-detailed-explanation-and-applications/) <br>
+[https://www.geeksforgeeks.org/deep-learning/categorical-cross-entropy-in-multi-class-classification/](https://www.geeksforgeeks.org/deep-learning/categorical-cross-entropy-in-multi-class-classification/) <br>
