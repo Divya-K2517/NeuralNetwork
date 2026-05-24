@@ -1,4 +1,4 @@
-**End-to-End Neural Network Implementation in Python**
+**End-to-End Neural Network Implementation in Python**<br>
 **readme currently unfinished**
 
 A completely connected neural network built using only NumPy and trained on the Fashion MNIST dataset. Every forward/backward pass, gradient, and weight update is done by hand without external libraries or functions, including the backpropagation alogrithim itself. 
