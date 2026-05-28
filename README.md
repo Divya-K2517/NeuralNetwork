@@ -83,7 +83,8 @@ The learning rate is important because if it is too large, the updates will be a
 The training is done in 20 epochs. Each epoch shuffles the training data and splits the training data into batches of 256 samples (for a total of 234 batches per epoch). Then, for each batch, we run the forward pass, compute loss and accuracy, run the backward pass, and then call the optimizer to update weights. 
 
 <ins>Results</ins> <br>
-$$Epoch  1/20  loss: 1.3488  acc: 57.9% <br>
+```text
+Epoch  1/20  loss: 1.3488  acc: 57.9% <br>
 Epoch  2/20  loss: 0.7752  acc: 74.6% <br>
 Epoch  3/20  loss: 0.6528  acc: 78.3% <br>
 Epoch  4/20  loss: 0.5940  acc: 80.1% <br>
@@ -107,7 +108,7 @@ Epoch 20/20  loss: 0.4163  acc: 85.6% <br>
 ── Test set evaluation ── <br>
 Loss:     0.4536 <br>
 Accuracy: 84.0% $$
-
+```
 The network starts with a 57.9% accuracy and ends at 85.6% after training, and a test accuracy of 84.0%. For reference, a random baseline for a 10 class data set would be ~10% accuracy.
 
 References: <br>
