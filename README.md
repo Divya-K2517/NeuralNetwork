@@ -63,8 +63,8 @@ Lets break this down:
 * one_hot[i] refers to the one-hot encoding for a certain class, where the other classes are 0 and the correct class is 1. For example, the one-hot encoding for class 2 would be: [0,0,1,0,0,0,0,0,0,0]
 * prediction[i] is the vector of how likely an example is of a certain class.
 * thanks to the one-hot encoding multiplying all wrong classes by 0, what we are essentially doing is: $-log(predictionProbabilityForCorrectClass)$
-
-⬅️ ## Backpropagation
+ 
+ ## ⬅️Backpropagation
 Backpropagation is the process of going backwards through the network(starting from output layer to the inputs) and computing how much each weight and bias contribute to the loss (here we use Categorical Cross-Entropy Loss. By doing this, we get an idea of how to tweak that weight/bias in order to minimize loss. <br>
 
 At the core of this process is the chain rule. Remember that for a single layer, $z = Wx + b$, where $z$ is output, $W$ is weight, $x$ is input, and $b$ is bias. We then apply the activation function and calculate loss. What is we want to know is $\frac{dL}{dW}$ - how much will loss change if we change a specific weight? Thanks to the chain rule that expression can be broken down into: $\frac{dL}{dW} = \frac{dL}{da} \* \frac{da}{dz} \* \frac{dz}{dW}$.  $\frac{dL}{da}$ is how the activation affects the loss, $\frac{da}{dz}$ is how the activation changes in response to the input, and $\frac{dz}{dW}$ is how the weights affect the output. With $\frac{dL}{dW}$, we can then do $new_weight = oldWeight + (learningRate)\frac{dL}{da}$. Each class has a backward() method that implements this backpropagation process.  <br>
