@@ -52,14 +52,14 @@ Hidden Layer 2 -- 64 neurons, ReLU activation
 The weights are initialized randomly through He initialization, which is where weights are taken from a normal distrubution that is scaled by $\sqrt{\frac{2}{n_inputs}}$. This type of intialization is specifically good for ReLU activations because it prevents vanishing or exploding gradients during training. In other words, this helps keep values flowing through the network without shrinking to 0 or excessivly growing after going through lots of forward/backward passes. The biases are all initialized to 0. 
 
 ## Forward Pass
-Each neuron does this computation: `output_of_neuron = input\*weight + bias `. Another way to represent this is through matrix multiplication. If we combine all the inputs, weights, and biases for a specific layer into matrices, we can do `output_of_layer = inputs_matrix\*weights_matrix + biases matrix`. Note that the inputs_matrix and weights_matrix are matrix multiplied(not the same as regular multiplication).
+Each neuron does this computation: $$output_of_neuron = input\*weight + bias $$. Another way to represent this is through matrix multiplication. If we combine all the inputs, weights, and biases for a specific layer into matrices, we can do $$output_of_layer = inputs_matrix\*weights_matrix + biases matrix$$. Note that the inputs_matrix and weights_matrix are matrix multiplied(not the same as regular multiplication).
 
-The *ReLU* activation function is applied after each hidden layer: `$ReLU(x) = max(0,x)$ `<br> 
-The *Softmax* activation function is applied to the output layer: `$Softmax(x) = \frac{e^x}{\text{sum of e**y for each output of that layer}}$ `
+The *ReLU* activation function is applied after each hidden layer: $$ReLU(x) = max(0,x)$ $$<br> 
+The *Softmax* activation function is applied to the output layer: $$Softmax(x) = \frac{e^x}{\text{sum of e**y for each output of that layer}}$$
 Softmax activation prevents numerical overflow by subtracting the minimum value of a set of inputs(these inputs to the softmax function are the outputs of a whole layer) from all values in the set.
 
 ## Loss
-The network trains using *Categorical Cross-Entropy* loss:  `loss = -(oneHot[i]*log(prediction[i])) for i in range (0, numClasses) `<br>
+The network trains using *Categorical Cross-Entropy* loss:  $$loss = -(oneHot[i]*log(prediction[i])) for i in range (0, numClasses)$$ <br>
 
 Lets break this down: 
 * each training example has its own loss
