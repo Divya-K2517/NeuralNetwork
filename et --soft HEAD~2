@@ -1,0 +1,233 @@
+[33mcommit 93241da2f20b534d4093be3762bedc11e3b7a26c[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m
+Author: Divya Kumari <divya.k2517@gmail.com>
+Date:   Thu Jun 11 22:08:35 2026 -0600
+
+    testing on Galaxy10DECaLS dataset
+
+[33mcommit e86b5f5729ceee1cd9416872d5a88d7d10de1f9a[m
+Author: Divya Kumari <divya.k2517@gmail.com>
+Date:   Thu Jun 11 21:58:54 2026 -0600
+
+    testing on Galaxy10DECaLS dataset
+
+[33mcommit 191b459a55ee7f236884c2ff73b49b0e61c8514d[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 30 19:52:17 2026 -0600
+
+    Fix formatting and heading for Backpropagation section
+    
+    Correct formatting and improve clarity of Backpropagation section.
+
+[33mcommit 23db7ad428a11e8c8ac1cd3fd863deb85fa7a8de[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 30 19:39:13 2026 -0600
+
+    Improve Table of Contents formatting in README
+    
+    Updated the Table of Contents formatting for better visibility.
+
+[33mcommit ee165ce0624ccc470ec21b6dbeee14b44c15a484[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 30 19:37:41 2026 -0600
+
+    Enhance Table of Contents formatting in README
+    
+    Updated Table of Contents with line breaks for better formatting.
+
+[33mcommit ae09c965aa19bba738d619bbda850ec009ece127[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 30 19:37:17 2026 -0600
+
+    Fix formatting of Table of Contents in README
+
+[33mcommit 45f94dbdc24f2d6d0168e68f510c367b2afb1a8f[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 30 19:36:19 2026 -0600
+
+    Revise Table of Contents formatting in README.md
+    
+    Updated the Table of Contents in README.md to reflect changes.
+
+[33mcommit 9206a3d485da0247c6226ce70ae26c22670bb085[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 30 19:34:48 2026 -0600
+
+    Update README.md
+
+[33mcommit 0e4812a58372c99b9b9c5fc68b0497b6144cb88d[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 30 19:31:33 2026 -0600
+
+    Fix NumPy badge color in README.md
+
+[33mcommit 8b1f24a428bca34861ec6fec2eb282c34bf6791e[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 30 19:27:51 2026 -0600
+
+    Fix spacing in Dataset section header
+
+[33mcommit ac0f12360e3ce8318dc678a579bfc34fc1a6c031[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 30 19:26:50 2026 -0600
+
+    Enhance README with emoji section headers
+    
+    Updated section headers with emojis for better visual appeal.
+
+[33mcommit f7b4737947d43321bce498b5ccb339a75184d57f[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 30 19:09:08 2026 -0600
+
+    Change header from h2 to h1 in README.md
+
+[33mcommit f9d3e4e6b4efdadd966d88538867d3ebe03c32fe[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 30 19:07:43 2026 -0600
+
+    Update README.md
+
+[33mcommit a2fabfb10ef38a2a9ec834daa2061338106f8c67[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 30 19:05:13 2026 -0600
+
+    Remove duplicate content in README.md
+    
+    Removed duplicate explanations of backpropagation and optimizer.
+
+[33mcommit 0d87413932db9fd13ad5b2bbf945a0b7e3092839[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 30 19:03:57 2026 -0600
+
+    Update README.md
+
+[33mcommit f4be3066c7efb3a29f9828ee380a8ed9b526c8d6[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 30 19:00:07 2026 -0600
+
+    Update README.md
+
+[33mcommit 921d5ccc35f27af067d9daf6e19dec6a2b7416c9[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 30 18:58:10 2026 -0600
+
+    Fix formatting and improve clarity in README
+    
+    Updated formatting and corrected text in the README.
+
+[33mcommit 266129905e32728f039776a7c8142638164733a5[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 30 18:54:19 2026 -0600
+
+    Update README.md
+
+[33mcommit d18e59a5564e03b1ef398e6717846ae01fdbff42[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Wed May 27 19:17:10 2026 -0600
+
+    Update README.md
+
+[33mcommit 98ea57342fec06a6375afeffb4366ea8d7984116[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Wed May 27 19:16:07 2026 -0600
+
+    Update README.md
+
+[33mcommit 6353cbc31511e5c009a8a93241a8a1f8fc966bc2[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Wed May 27 19:14:40 2026 -0600
+
+    Enhance README with backpropagation and training details
+    
+    Added detailed explanation of backpropagation, optimizer, training loop, and results.
+
+[33mcommit a6a5345e54d9cd9513747fd0e71b078a5fe9c7f5[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sun May 24 23:44:28 2026 -0400
+
+    Refactor variable names in loss explanation
+    
+    Updated variable names in the loss section for consistency.
+
+[33mcommit d8245a84a4236e91d9c78420ef8a5f075604b691[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sun May 24 23:43:39 2026 -0400
+
+    Update README.md
+
+[33mcommit 9a5653d476f0e71cf6cc83f70002a0218765f096[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sun May 24 23:42:08 2026 -0400
+
+    Update README.md
+
+[33mcommit 3d11588c973cb11dd9b1ecf8e4b311ad10f62bf8[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sun May 24 11:46:29 2026 -0400
+
+    Update README.md
+
+[33mcommit b29241c3a70f27d69a7d82919ec783317544501c[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sun May 24 11:46:20 2026 -0400
+
+    Mark README as unfinished
+    
+    Added a note indicating that the README is currently unfinished.
+
+[33mcommit 054ddfac24714a2662a8739108ea025b057382b2[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 23 23:07:05 2026 -0400
+
+    Fix formatting in Softmax activation function description
+
+[33mcommit a051bf6b9a64d2563b0f895584606c671a37e7c6[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 23 23:06:45 2026 -0400
+
+    Fix Softmax function description in README
+    
+    Corrected formatting and clarified Softmax function description.
+
+[33mcommit 87df0270c96831e7e31631c907172ed4be092f01[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 23 23:06:06 2026 -0400
+
+    Fix Softmax equation formatting in README
+    
+    Updated Softmax activation function notation for clarity.
+
+[33mcommit 50c55c4b1eef66fa24c658f29b3308fd0ebe3d6f[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 23 22:54:12 2026 -0400
+
+    Update README.md
+
+[33mcommit 92c366134860ed98092cefacf81e29bc819f62ed[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 23 22:53:15 2026 -0400
+
+    Fix formatting and improve clarity in README.md
+
+[33mcommit 9caccd36a9df90dea57ba6ff1f7aa5109b9d7ecd[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Sat May 23 22:51:14 2026 -0400
+
+    Enhance README with Categorical Cross-Entropy details
+    
+    Added explanation of Categorical Cross-Entropy loss and its components.
+
+[33mcommit 8714d0c93854a90bc3baf0b2ce2b38a9ac8acf10[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Fri May 22 23:16:58 2026 -0400
+
+    Fix formatting in README for network architecture
+    
+    Correct formatting issues and improve clarity in the network architecture section.
+
+[33mcommit 4471a39c278d98f53ef1d05e75e4a80320508f95[m
+Author: Divya Kumari <115424525+Divya-K2517@users.noreply.github.com>
+Date:   Fri May 22 23:15:42 2026 -0400
+
+    Fix formatting and enhance clarity in README.md
+    
+    Corrected formatting issues

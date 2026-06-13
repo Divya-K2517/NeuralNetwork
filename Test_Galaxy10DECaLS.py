@@ -3,7 +3,7 @@
 
 import h5py
 import numpy as np
-from p1 import compute_accuracy, Layer_Dense, Activation_ReLU, Activation_Softmax_Loss_CategoricalCrossentropy, Optimizer_SGD, Activation_Softmax, Loss_CategoricalCrossentropy
+from p1 import compute_accuracy, Layer_Dense, Activation_ReLU, Activation_Softmax_Loss_CategoricalCrossentropy, Optimizer_SGD, Activation_Softmax, Loss_CategoricalCrossentropy, Optimizer_Adam
 
 
 
@@ -51,69 +51,70 @@ activation2 = Activation_ReLU()
 dense3 = Layer_Dense(128, numClasses) #output layer here is 10 (numClasses)
 
 loss_activation = Activation_Softmax_Loss_CategoricalCrossentropy()
-optimizer = Optimizer_SGD(learning_rate=0.01)
+optimizer = Optimizer_Adam(learning_rate=0.01)
 
 epochs = 20
 batch_size = 64
 
-for epoch in range(epochs):
-    #each epoch we train a single batch
+if __name__ == "__main__":
+    for epoch in range(epochs):
+        #each epoch we train a single batch
 
-    #shulffe the training data
-    indices = np.random.permutation(len(x_train))
-    x_shuffled, y_shuffled = x_train[indices], y_train[indices]
+        #shulffe the training data
+        indices = np.random.permutation(len(x_train))
+        x_shuffled, y_shuffled = x_train[indices], y_train[indices]
 
-    epochLoss = 0
-    epochAccuracy = 0
-    numBatches = len(x_train) // batch_size
+        epochLoss = 0
+        epochAccuracy = 0
+        numBatches = len(x_train) // batch_size
 
-    for i in range(numBatches):
-        #to get the batch, we do the 1, 2, 3, ... batch_size, then the next batch_size, etc
-        x_batch = x_shuffled[i*batch_size:(i+1)*batch_size]
-        y_batch = y_shuffled[i*batch_size:(i+1)*batch_size]
+        for i in range(numBatches):
+            #to get the batch, we do the 1, 2, 3, ... batch_size, then the next batch_size, etc
+            x_batch = x_shuffled[i*batch_size:(i+1)*batch_size]
+            y_batch = y_shuffled[i*batch_size:(i+1)*batch_size]
 
-        #forward pass
-        dense1.forward(x_batch)
-        activation1.forward(dense1.output)
-        dense2.forward(activation1.output)
-        activation2.forward(dense2.output)
-        dense3.forward(activation2.output)
-        loss = loss_activation.forward(dense3.output, y_batch)
-        epochLoss += loss
+            #forward pass
+            dense1.forward(x_batch)
+            activation1.forward(dense1.output)
+            dense2.forward(activation1.output)
+            activation2.forward(dense2.output)
+            dense3.forward(activation2.output)
+            loss = loss_activation.forward(dense3.output, y_batch)
+            epochLoss += loss
 
-        predictions = np.argmax(loss_activation.output, axis=1)
-        epochAccuracy += np.mean(predictions == y_batch)
+            predictions = np.argmax(loss_activation.output, axis=1)
+            epochAccuracy += np.mean(predictions == y_batch)
+            
+            #backward pass
+            loss_activation.backward(loss_activation.output, y_batch)
+            dense3.backward(loss_activation.dinputs)
+            activation2.backward(dense3.dinputs)
+            dense2.backward(activation2.dinputs)
+            activation1.backward(dense2.dinputs)
+            dense1.backward(activation1.dinputs)
+
+            #update weights and biases
+            optimizer.update_params(dense1)
+            optimizer.update_params(dense2)
+            optimizer.update_params(dense3)
         
-        #backward pass
-        loss_activation.backward(loss_activation.output, y_batch)
-        dense3.backward(loss_activation.dinputs)
-        activation2.backward(dense3.dinputs)
-        dense2.backward(activation2.dinputs)
-        activation1.backward(dense2.dinputs)
-        dense1.backward(activation1.dinputs)
-
-        #update weights and biases
-        optimizer.update_params(dense1)
-        optimizer.update_params(dense2)
-        optimizer.update_params(dense3)
-    
-    print(f"Epoch {epoch+1:>2}/{epochs}  loss: {epochLoss/numBatches:.4f}  acc: {epochAccuracy/numBatches*100:.1f}%")
+        print(f"Epoch {epoch+1:>2}/{epochs}  loss: {epochLoss/numBatches:.4f}  acc: {epochAccuracy/numBatches*100:.1f}%")
 
 
-#testing the model on the test set
-dense1.forward(x_test)
-activation1.forward(dense1.output)
-dense2.forward(activation1.output)
-activation2.forward(dense2.output)
-dense3.forward(activation2.output)
+    #testing the model on the test set
+    dense1.forward(x_test)
+    activation1.forward(dense1.output)
+    dense2.forward(activation1.output)
+    activation2.forward(dense2.output)
+    dense3.forward(activation2.output)
 
-activation3 = Activation_Softmax()
-activation3.forward(dense3.output)
+    activation3 = Activation_Softmax()
+    activation3.forward(dense3.output)
 
-loss_fn = Loss_CategoricalCrossentropy()
-test_loss = loss_fn.calculate(activation3.output, y_test)
-test_acc = compute_accuracy(activation3.output, y_test)
+    loss_fn = Loss_CategoricalCrossentropy()
+    test_loss = loss_fn.calculate(activation3.output, y_test)
+    test_acc = compute_accuracy(activation3.output, y_test)
 
-print(f"\n── Test set evaluation ──")
-print(f"Loss:     {test_loss:.4f}")
-print(f"Accuracy: {test_acc*100:.1f}%")
+    print(f"\n── Test set evaluation ──")
+    print(f"Loss:     {test_loss:.4f}")
+    print(f"Accuracy: {test_acc*100:.1f}%")

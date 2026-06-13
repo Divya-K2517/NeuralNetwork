@@ -130,6 +130,57 @@ class Optimizer_SGD:
         layer.weights -= self.learning_rate * layer.dweights
         layer.biases -= self.learning_rate * layer.dbiases
 
+class Optimizer_Adam:
+    #adam optimization keeps a running avg of past gradients, and uses that to update current gradient
+    #it also keeps a running avg of squared gradients per weight
+    #then it divides the update by sqrt(v) where v is the running avg of squared gradients
+    #ex.
+        #w = 1
+        #learning_rate = 0.1
+        #gradient = 0.5
+        #m = 0, v = 0 (m and v are the running avgs of past gradients and squared gradients)
+        
+        #after 1st update:
+        #m = 0.9*m + 0.1*gradient
+        #v = 0.999*v + 0.001*gradient^2
+        #newWeight = w - (learning_rate*m)/(sqrt(v)+1e-7) #we add 1e-7 to avoid division by 0
+    
+    #this way, weights with large gradients will have their updates scaled down, and weights with small gradients will have their updates scaled up, which can help us avoid vanishing/exploding gradients and can lead to faster convergence
+    #in other words, it helps us take bigger steps in the right direction, and smaller steps in the wrong direction
+
+    def __init__(self, learning_rate=0.001, beta_1=0.9, beta_2=0.999, epsilon=1e-8):
+        self.learning_rate = learning_rate
+        self.beta_1 = beta_1 #past gradient * beta_1 
+        self.beta_2 = beta_2 #past squared gradient * beta_2
+        self.epsilon = epsilon
+        self.t = 0 #timestep counter
+    
+    def update_params(self, layer):
+        #this will be called each layer during each update step
+        if not hasattr(layer, 'm_weights'):
+            layer.m_weights = np.zeros_like(layer.weights)
+            layer.v_weights = np.zeros_like(layer.weights)
+            layer.m_biases = np.zeros_like(layer.biases)
+            layer.v_biases = np.zeros_like(layer.biases)
+        #update timestep
+        self.t += 1
+
+        #update running avgs
+        layer.m_weights = self.beta_1 * layer.m_weights + (1 - self.beta_1) * layer.dweights #dweights is the current gradient of the loss with respect to the weights, which is calculated during backpropagation
+        layer.v_weights = self.beta_2 * layer.v_weights + (1 - self.beta_2) * layer.dweights**2
+        layer.m_biases  = self.beta_1 * layer.m_biases  + (1 - self.beta_1) * layer.dbiases
+        layer.v_biases  = self.beta_2 * layer.v_biases  + (1 - self.beta_2) * layer.dbiases**2
+
+        #correct bias
+        #this is because the running avgs are initialized to 0, so they are biased towards 0 at the beginning of training, especially when beta_1 and beta_2 are close to 1
+        m_w = layer.m_weights / (1 - self.beta_1**self.t)
+        v_w = layer.v_weights / (1 - self.beta_2**self.t)
+        m_b = layer.m_biases  / (1 - self.beta_1**self.t)
+        v_b = layer.v_biases  / (1 - self.beta_2**self.t)
+
+        #update weights and biases
+        layer.weights -= self.learning_rate * m_w / (np.sqrt(v_w) + self.epsilon) #doing - to move in the direction of the negative gradient, which is the direction of steepest descent
+        layer.biases  -= self.learning_rate * m_b / (np.sqrt(v_b) + self.epsilon)
 
 def compute_accuracy(predictions, y_true):
     #fraction of samples where argmax prediction matches the true label
@@ -225,66 +276,67 @@ optimizer = Optimizer_SGD(learning_rate=0.01)
 epochs = 20
 batch_size = 256
 
-for epoch in range(epochs):
-    #each epoch will use a different set of data
-    indices = np.random.permutation(len(X_train))
-    X_shuffled = X_train[indices]
-    y_shuffled = y_train[indices]
+if __name__ == "__main__":
+    for epoch in range(epochs):
+        #each epoch will use a different set of data
+        indices = np.random.permutation(len(X_train))
+        X_shuffled = X_train[indices]
+        y_shuffled = y_train[indices]
 
-    epoch_loss = 0
-    epoch_accuracy = 0
-    num_batches = len(X_train) //batch_size
+        epoch_loss = 0
+        epoch_accuracy = 0
+        num_batches = len(X_train) //batch_size
 
-    for i in range(num_batches):
-        #now we get a different batch of data for each iteration of the loop
-        X_batch = X_shuffled[i*batch_size:(i+1)*batch_size] 
-        y_batch = y_shuffled[i*batch_size:(i+1)*batch_size]
+        for i in range(num_batches):
+            #now we get a different batch of data for each iteration of the loop
+            X_batch = X_shuffled[i*batch_size:(i+1)*batch_size] 
+            y_batch = y_shuffled[i*batch_size:(i+1)*batch_size]
 
-        #forward
-        dense1.forward(X_batch)
-        activation1.forward(dense1.output)
-        dense2.forward(activation1.output)
-        activation2.forward(dense2.output)
-        dense3.forward(activation2.output)
-        loss = loss_activation.forward(dense3.output, y_batch)
-        epoch_loss += loss
+            #forward
+            dense1.forward(X_batch)
+            activation1.forward(dense1.output)
+            dense2.forward(activation1.output)
+            activation2.forward(dense2.output)
+            dense3.forward(activation2.output)
+            loss = loss_activation.forward(dense3.output, y_batch)
+            epoch_loss += loss
 
-        #accuracy
-        predictions = np.argmax(loss_activation.output, axis=1)
-        accuracy = np.mean(predictions == y_batch)
-        epoch_accuracy += accuracy
+            #accuracy
+            predictions = np.argmax(loss_activation.output, axis=1)
+            accuracy = np.mean(predictions == y_batch)
+            epoch_accuracy += accuracy
 
-        #backward
-        loss_activation.backward(loss_activation.output, y_batch)
-        dense3.backward(loss_activation.dinputs)
-        activation2.backward(dense3.dinputs)
-        dense2.backward(activation2.dinputs)
-        activation1.backward(dense2.dinputs)
-        dense1.backward(activation1.dinputs)
+            #backward
+            loss_activation.backward(loss_activation.output, y_batch)
+            dense3.backward(loss_activation.dinputs)
+            activation2.backward(dense3.dinputs)
+            dense2.backward(activation2.dinputs)
+            activation1.backward(dense2.dinputs)
+            dense1.backward(activation1.dinputs)
 
-        #updating the optimizer
-        optimizer.update_params(dense1)
-        optimizer.update_params(dense2)
-        optimizer.update_params(dense3)
+            #updating the optimizer
+            optimizer.update_params(dense1)
+            optimizer.update_params(dense2)
+            optimizer.update_params(dense3)
 
-    print(f"Epoch {epoch+1:>2}/{epochs}  loss: {epoch_loss/num_batches:.4f}  acc: {epoch_accuracy/num_batches*100:.1f}%")
-    if (epoch == 19):
-        print(f"Final Accuracy(on training data): {epoch_accuracy/num_batches*100:.1f}") 
+        print(f"Epoch {epoch+1:>2}/{epochs}  loss: {epoch_loss/num_batches:.4f}  acc: {epoch_accuracy/num_batches*100:.1f}%")
+        if (epoch == 19):
+            print(f"Final Accuracy(on training data): {epoch_accuracy/num_batches*100:.1f}") 
 
 
-#testing on X_text y_test
-dense1.forward(X_test)
-activation1.forward(dense1.output)
-dense2.forward(activation1.output)
-activation2.forward(dense2.output)
-dense3.forward(activation2.output)
-loss_activation.activation.forward(dense3.output)  # softmax only, no loss needed
- 
-loss_fn   = Loss_CategoricalCrossentropy()
-test_loss = loss_fn.calculate(loss_activation.activation.output, y_test)
-test_acc  = compute_accuracy(loss_activation.activation.output, y_test)
- 
-print()
-print(f"\n── Test set evaluation ──")
-print(f"Loss:     {test_loss:.4f}")
-print(f"Accuracy: {test_acc*100:.1f}%")
+    #testing on X_text y_test
+    dense1.forward(X_test)
+    activation1.forward(dense1.output)
+    dense2.forward(activation1.output)
+    activation2.forward(dense2.output)
+    dense3.forward(activation2.output)
+    loss_activation.activation.forward(dense3.output)  # softmax only, no loss needed
+    
+    loss_fn   = Loss_CategoricalCrossentropy()
+    test_loss = loss_fn.calculate(loss_activation.activation.output, y_test)
+    test_acc  = compute_accuracy(loss_activation.activation.output, y_test)
+    
+    print()
+    print(f"\n── Test set evaluation ──")
+    print(f"Loss:     {test_loss:.4f}")
+    print(f"Accuracy: {test_acc*100:.1f}%")
