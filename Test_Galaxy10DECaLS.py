@@ -132,3 +132,23 @@ if __name__ == "__main__":
     print(f"\n── Test set evaluation ──")
     print(f"Loss:     {test_loss:.4f}")
     print(f"Accuracy: {test_acc*100:.1f}%")
+
+    # after test evaluation
+    for i, name in enumerate(CLASS_NAMES):
+        mask = (y_test == i)
+        if mask.sum() == 0:
+            continue
+        class_preds = np.argmax(activation3.output[mask], axis=1)
+        class_acc = np.mean(class_preds == i)
+        print(f"  [{i}] {name:<35} acc: {class_acc*100:.1f}%  (n={mask.sum()})")
+
+    conf_matrix = np.zeros((numClasses, numClasses), dtype=int)
+    predicted = np.argmax(activation3.output, axis=1)
+    for true, pred in zip(y_test, predicted):
+        conf_matrix[true][pred] += 1
+
+    print("\nConfusion Matrix (rows=true, cols=predicted):")
+    header = "     " + "".join(f"{i:>6}" for i in range(numClasses))
+    print(header)
+    for i, row in enumerate(conf_matrix):
+        print(f"[{i}]  " + "".join(f"{v:>6}" for v in row))
