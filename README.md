@@ -8,7 +8,7 @@ A completely connected neural network built using only NumPy and trained on the 
 Starting from random weights, the model reaches 85.6% training accuracy and 84.0% test accuracy.
 
 ## Table of Contents
-**Dataset** <br>
+**Datasets** <br>
 **Network Architecture**<br>
 **Forward Pass**<br>
 **Loss Function**<br>
@@ -18,7 +18,9 @@ Starting from random weights, the model reaches 85.6% training accuracy and 84.0
 **Results**<br>
 
 ## 👗 Dataset
-The network is currently trained on the Fashion MNIST dataset, which is a replacement for the classic MNIST (handwritten digits) dataset. It is a collection of 70,000 total images of clothing articles, each belonging to one of 10 classes. The images have the same structure as MNIST: grayscale and 28x28 pixels. These are the 10 classes: 
+The network was tested on two datasets: Fashion MNIST(a replacement for the classic MNIST handwritten digits), and NSL-KDD(an improved version of the KDD'99 set which categorizes network intrusions).
+
+Fashion MNIST dataset is a collection of 70,000 total images of clothing articles, each belonging to one of 10 classes. The images have the same structure as MNIST: grayscale and 28x28 pixels. These are the 10 classes: 
 
 
 | Label | Class |
@@ -33,6 +35,18 @@ The network is currently trained on the Fashion MNIST dataset, which is a replac
 | 7 | Sneaker |
 | 8 | Bag |
 | 9 | Ankle boot |
+
+NSL-KDD contains ~125,000 training and ~22,000 test records, with 41 features per record. These records are grouped into 5 main categories, or classes, but can be further divided into 22 specific types of attacks. These are the 5 classes: 
+
+| Label | Class |
+| ------------- | ------------- |
+| 0 | normal |
+| 1 | dos |
+| 2 | probe |
+| 3 | r2l |
+| 4 | u2r |
+
+
 
 Before training, the images were flattened. This means instead of a 2D array of 28x28, they were reshaped into a 1D array of 784 values. This makes it easier for the network's layers to consume data, and doesn't have any negative effect either. The image arrays were also normalized. This is the process of converting values to be between a range of [0.0, 1.0]. Orignally, since this dataset consists of images, the values for each example were between [0, 255]. Normalization keeps the inputes small and prevents erractic weight updates or unnesscary complexity later on during training. 
 
@@ -123,3 +137,5 @@ References: <br>
 [https://www.geeksforgeeks.org/deep-learning/categorical-cross-entropy-in-multi-class-classification/](https://www.geeksforgeeks.org/deep-learning/categorical-cross-entropy-in-multi-class-classification/) <br>
 [https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/](https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/)<br>
 [https://github.com/Sentdex/nnfs](https://github.com/Sentdex/nnfs)<br>
+[https://github.com/jmnwong/NSL-KDD-Dataset](https://github.com/jmnwong/NSL-KDD-Dataset)<br>
+[https://www.kaggle.com/datasets/hassan06/nslkdd](https://www.kaggle.com/datasets/hassan06/nslkdd)<br>
