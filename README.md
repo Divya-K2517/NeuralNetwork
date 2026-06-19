@@ -14,6 +14,8 @@ Starting from random weights, the model reaches 85.6% training accuracy and 84.0
 **Loss Function**<br>
 **Backpropagation**<br>
 **Optimizer**<br>
+**Regularization** <br>
+**Gradient Clipping** <br>
 **Training Loop**<br>
 **Results**<br>
 
