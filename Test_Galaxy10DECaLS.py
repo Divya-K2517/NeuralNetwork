@@ -7,7 +7,7 @@ import numpy as np
 from p1 import compute_accuracy, Layer_Dense, Layer_Dropout,Activation_ReLU, Activation_LeakyReLU, Activation_Softmax_Loss_CategoricalCrossentropy, Optimizer_SGD, clip_gradients, Activation_Softmax, Loss_CategoricalCrossentropy, Optimizer_Adam
 
 #download dataset
-DATA_DIR = "nsl_kdd_data"
+DATA_DIR = "nslKdd/nsl_kdd_data"
 os.makedirs(DATA_DIR, exist_ok=True)
 
 FILES = {
@@ -171,6 +171,8 @@ epochs = 20
 batch_size = 64
 
 if __name__ == "__main__":
+    print("total train: ", len(x_train))
+    print("total test: ", len(x_test))
     for epoch in range(epochs):
         #each epoch we train a single batch
 
