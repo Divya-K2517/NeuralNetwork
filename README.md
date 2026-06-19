@@ -20,7 +20,7 @@ Starting from random weights, the model reaches 85.6% training accuracy and 84.0
 ## 👗 Dataset
 The network was tested on two datasets: Fashion MNIST(a replacement for the classic MNIST handwritten digits), and NSL-KDD(an improved version of the KDD'99 set which categorizes network intrusions).
 
-# Fashion MNIST
+### Fashion MNIST
 Fashion MNIST dataset is a collection of 70,000 total images of clothing articles, each belonging to one of 10 classes. The images have the same structure as MNIST: grayscale and 28x28 pixels. These are the 10 classes: 
 
 
@@ -39,7 +39,7 @@ Fashion MNIST dataset is a collection of 70,000 total images of clothing article
 
 Before training, the images were flattened. This means instead of a 2D array of 28x28, they were reshaped into a 1D array of 784 values. This makes it easier for the network's layers to consume data, and doesn't have any negative effect either. The image arrays were also normalized. This is the process of converting values to be between a range of [0.0, 1.0]. Orignally, since this dataset consists of images, the values for each example were between [0, 255]. Normalization keeps the inputes small and prevents erractic weight updates or unnesscary complexity later on during training.
 
-# NSL-KDD (Network Intrusion Detection)
+### NSL-KDD (Network Intrusion Detection)
 NSL-KDD is a tabular dataset, containing ~125,000 training and ~22,000 test records/rows with 41 features per record. There are 38 numeric columns, and 3 categorical text columns. The 3 text columns were one-hot encoded, and the other 38 were scaled to a range of [0,1]. These records are grouped into 22 specific types of attacks, but these can be collapsed into 5 broad categories. These are the 5 classes: 
 
 | Label | Class | Description |
@@ -95,7 +95,7 @@ For each layer, 3 calculations are done to update the weights, biases, and send 
 
 ## 🔨Optimizer
 
-# SGD (Stochastic Gradient Descent)
+### SGD (Stochastic Gradient Descent)
 SGD is used for Fashion MNIST with a learning rate of 0.01. After the backpropagation step computes the gradients (how much the loss changes in response to weights, biases, and inputs), the optimizer applies these rules to every layer: <br>
 $$weights = weights - (learningRate \* dweights) $$ <br>
 $$biases = biases - (learningRate \* dbiases) $$ <br>
@@ -104,7 +104,7 @@ These equations move the weights/biases in the opposite direction of the gradien
 
 The learning rate is important because if it is too large, the updates will be an overshoot. Too small and the training will be very slow. 
 
-# Adam (Adaptive Moment Estimation)
+### Adam (Adaptive Moment Estimation)
 Adam is used for the NSL-KDD dataset. Instead of a fixed learning rate, Adam tracks two running averages per weight: 
 - $m$ — an exponential moving average of past gradients (momentum): $m = \beta_1 m + (1 - \beta_1) \cdot dW$ <br>
 - $v$ — an exponential moving average of past squared gradients: $v = \beta_2 v + (1 - \beta_2) \cdot dW^2$ <br>
@@ -135,7 +135,7 @@ The training is done in 20 epochs. Each epoch shuffles the training data and spl
 
 ## 🎯Results
 
-# Fashion MNIST
+### Fashion MNIST
 ```text
 Epoch  1/20  loss: 1.3488  acc: 57.9% 
 Epoch  2/20  loss: 0.7752  acc: 74.6% 
@@ -164,7 +164,7 @@ Accuracy: 84.0% $$
 ```
 The network starts with a 57.9% accuracy and ends at 85.6% after training, and a test accuracy of 84.0%. For reference, a random baseline for a 10 class data set would be ~10% accuracy.
 
-# NSL-KDD
+### NSL-KDD
 ```text
 Epoch  1/20  loss: 0.3589  acc: 89.0%
 Epoch  2/20  loss: 0.1887  acc: 95.3%
