@@ -3,6 +3,11 @@
 ![NumPy](https://img.shields.io/badge/NumPy-green)
 ![Accuracy](https://img.shields.io/badge/Test%20Accuracy-84%25-brightgreen)
 
+<p align="center">
+  <img src="fashion_mnist_confusion_matrix.png" width="49%" />
+  <img src="nslkdd_confusion_matrix.png" width="49%" />
+</p>
+
 A completely connected neural network built using only NumPy and trained on the Fashion MNIST dataset. Every forward/backward pass, gradient, and weight update is done by hand without external libraries or functions, including the backpropagation alogrithim itself. 
 
 Starting from random weights, the model reaches 85.3% training accuracy and 83.8% test accuracy on the Fashion MNIST dataset, and 93.4% training accuracy and 78.2% test accuracy on the NSL-KDD dataset.
