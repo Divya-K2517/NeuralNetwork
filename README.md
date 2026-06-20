@@ -4,8 +4,8 @@
 ![Accuracy](https://img.shields.io/badge/Test%20Accuracy-84%25-brightgreen)
 
 <p align="center">
-  <img src="fashion_mnist_confusion_matrix.png" width="49%" />
-  <img src="nslkdd_confusion_matrix.png" width="49%" />
+  <img src="fashion_mnist_confusion_matrix.png" width="44%" />
+  <img src="nslkdd_confusion_matrix.png" width="44%" />
 </p>
 
 A completely connected neural network built using only NumPy and trained on the Fashion MNIST dataset. Every forward/backward pass, gradient, and weight update is done by hand without external libraries or functions, including the backpropagation alogrithim itself. 
