@@ -4,7 +4,8 @@
 import os
 import urllib.request
 import numpy as np
-from p1 import compute_accuracy, Layer_Dense, Layer_Dropout,Activation_ReLU, Activation_LeakyReLU, Activation_Softmax_Loss_CategoricalCrossentropy, Optimizer_SGD, clip_gradients, Activation_Softmax, Loss_CategoricalCrossentropy, Optimizer_Adam
+from network import compute_accuracy, Layer_Dense, compute_class_weights, compute_f1_per_class, Layer_Dropout,Activation_ReLU, Activation_LeakyReLU, Activation_Softmax_Loss_CategoricalCrossentropy, Optimizer_SGD, clip_gradients, Activation_Softmax, Loss_CategoricalCrossentropy, Optimizer_Adam
+from plot_results import plot_confusion_matrix
 
 #download dataset
 DATA_DIR = "nslKdd/nsl_kdd_data"
@@ -143,7 +144,6 @@ x_test = np.concatenate([x_test_num, x_test_cat], axis=1).astype(np.float32)
 #split into test and train
 np.random.seed(0)
 indices = np.random.permutation(len(x_train)) #getting random indices to shuffle the data
-split = int(0.8 * len(images)) #80% for training, 20% for testing
 x_train, y_train = x_train[indices], y_train[indices]
 
 # #creating a subset for easier testing
@@ -152,6 +152,15 @@ x_train, y_train = x_train[indices], y_train[indices]
 
 numInputs = x_train.shape[1] #number of features (pixels)
 numClasses = len(CLASS_NAMES) #number of classes
+
+#NSL-KDD is unbalanced in terms of the number of u2r and r2l examples
+#so we are going to weight the rare classes more so that mistakes on these examples will cost more
+#but also will cap the weight at 20 bc too high weight is bad too
+class_weights = compute_class_weights(y_train, num_classes=numClasses, max_weight=20.0)
+print("Class weights (to counter imbalance):")
+for i, name in enumerate(CLASS_NAMES):
+    print(f"  {name:8s}: {class_weights[i]:.2f}")
+print()
 
 #define the layers of the neural network
 dense1 = Layer_Dense(numInputs, 128) #128 is the length of the output vector from this layer, which is also the number of neurons in this layer
@@ -198,14 +207,14 @@ if __name__ == "__main__":
             dropout2.forward(activation2.output, training=True)
             dense3.forward(dropout2.output)
 
-            loss = loss_activation.forward(dense3.output, y_batch)
+            loss = loss_activation.forward(dense3.output, y_batch, class_weights = class_weights)
             epochLoss += loss
 
             predictions = np.argmax(loss_activation.output, axis=1)
             epochAccuracy += np.mean(predictions == y_batch)
             
             #backward pass
-            loss_activation.backward(loss_activation.output, y_batch)
+            loss_activation.backward(loss_activation.output, y_batch, class_weights = class_weights)
             dense3.backward(loss_activation.dinputs)
             dropout2.backward(dense3.dinputs)
             activation2.backward(dense3.dinputs)
@@ -227,7 +236,13 @@ if __name__ == "__main__":
         dead_ratio = np.mean(activation1.output == 0)
         print(f"Fraction of dead ReLU outputs in layer 1: {dead_ratio:.2%}")
         print(f"Epoch {epoch+1:>2}/{epochs}  loss: {epochLoss/numBatches:.4f}  acc: {epochAccuracy/numBatches*100:.1f}%")
+
+        #watching the rare classes during training
+        dontCare, dontCare2, epoch_f1 = compute_f1_per_class(loss_activation.output, y_batch, numClasses)
+        f1_str = "  ".join(f"{name}:{epoch_f1[i]:.2f}" for i, name in enumerate(CLASS_NAMES))
+        print(f"  Per-class F1 (last batch): {f1_str}")
         print()
+
 
     #testing the model on the test set
     dense1.forward(x_test)
@@ -247,22 +262,21 @@ if __name__ == "__main__":
     print(f"Loss:     {test_loss:.4f}")
     print(f"Accuracy: {test_acc*100:.1f}%")
 
-    # after test evaluation
+    precision, recall, f1 = compute_f1_per_class(activation3.output, y_test, numClasses)
+    print("\nPer-class metrics (this is what overall accuracy hides):")
+    print(f"  {'class':<8s} {'precision':>10s} {'recall':>10s} {'f1':>10s}")
     for i, name in enumerate(CLASS_NAMES):
-        mask = (y_test == i)
-        if mask.sum() == 0:
-            continue
-        class_preds = np.argmax(activation3.output[mask], axis=1)
-        class_acc = np.mean(class_preds == i)
-        print(f"  [{i}] {name:<35} acc: {class_acc*100:.1f}%  (n={mask.sum()})")
+        print(f"  {name:<8s} {precision[i]:>10.2f} {recall[i]:>10.2f} {f1[i]:>10.2f}")
+    macro_f1 = np.mean(f1)
+    print(f"\nMacro F1 (unweighted avg across classes): {macro_f1:.3f}")
 
-    conf_matrix = np.zeros((numClasses, numClasses), dtype=int)
     predicted = np.argmax(activation3.output, axis=1)
-    for true, pred in zip(y_test, predicted):
-        conf_matrix[true][pred] += 1
-
-    print("\nConfusion Matrix (rows=true, cols=predicted):")
-    header = "     " + "".join(f"{i:>6}" for i in range(numClasses))
-    print(header)
-    for i, row in enumerate(conf_matrix):
-        print(f"[{i}]  " + "".join(f"{v:>6}" for v in row))
+    plot_confusion_matrix(
+        y_true=y_test,
+        y_pred=predicted,
+        class_names=CLASS_NAMES,
+        title="NSL-KDD Network Intrusion Detection",
+        test_acc=test_acc,
+        test_loss=test_loss,
+        save_path="nslkdd_confusion_matrix.png"
+    )
